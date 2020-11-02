@@ -1,6 +1,41 @@
 .house-maint-container {
-    width: 100%;
-    padding: 10px 30px 0;
-    //text-align: center;
-    font-size: 1.2rem;
+  width: 100%;
+  padding: 10px 30px 0;
+  //text-align: center;
+  font-size: 1rem;
+  line-height: 1;
+
+  &__loader {
+    text-align: center;
+  }
+
+  &__action {
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    padding: 10px;
+
+    &--text {
+      padding-left: 5px;
+    }
+
+    &--btn {
+      font-size: 1.1em;
+      margin-left: 10px;
+      background: #f5ac00;
+
+      &:hover {
+        background: #4d4b40;
+      }
+
+      &:disabled {
+        background: #dee2e6;
+        color: black;
+        border-color: black;
+      }
+      &:focus {
+        background: #f5ac00;
+      }
+    }
+  }
 }

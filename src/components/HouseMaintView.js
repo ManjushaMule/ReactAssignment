@@ -8,7 +8,7 @@ class HouseMaintView extends Component {
         return(
             <div className="house-maint-view">
                 <Header />
-                <div style={{marginTop: "72px"}}>
+                <div style={{marginTop: "30px"}}>
                     <HouseMaintContainer />
                 </div>
             </div>

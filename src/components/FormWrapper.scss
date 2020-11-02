@@ -1,0 +1,49 @@
+.form-wrapper {
+    line-height: 1;
+
+    &__btn-section {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-end;
+        padding: .75rem;
+        border-top: 1px solid #dee2e6;
+        border-bottom-right-radius: calc(.3rem - 1px);
+        border-bottom-left-radius: calc(.3rem - 1px);
+    }
+    button {
+        margin: .25rem;
+    }
+
+    &__checkbox-section {
+        padding: 10px;
+        margin-top: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+
+        h6 {
+            margin-top:-20px;
+            color: #696969;
+
+            span {
+                background-color: white;
+            }
+        }
+    }
+
+    &__comments {
+        padding: 10px 10px 0;
+        margin: 30px 0 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+
+        h6 {
+            margin-top:-20px;
+            color: #696969;
+
+            span {
+                background-color: white;
+            }
+        }
+    }
+}

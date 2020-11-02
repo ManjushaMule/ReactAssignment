@@ -1,6 +1,6 @@
 import React from 'react';
 import './Header.scss';
-import logo from '../../logo.svg';
+import logo from '../../images/logo-spectra.png';
 //import Logo from '../../Logo/Logo';
 
 
@@ -10,9 +10,6 @@ const header = ( props ) => (
             <img src={logo} className="header__logo" alt="logo" />
             {/* <Logo /> */}
         </div>
-        {/* <nav className={classes.DesktopOnly}>
-            <NavigationItems />
-        </nav> */}
     </header>
 );
 

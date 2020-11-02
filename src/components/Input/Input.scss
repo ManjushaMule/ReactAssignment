@@ -22,6 +22,11 @@
     box-sizing: border-box;
 }
 
+.InputCheckbox {
+    width: auto;
+    margin-left: 10px;
+}
+
 .InputElement:focus {
     outline: none;
     background-color: #ccc;
@@ -29,7 +34,7 @@
 
 .InputElement:disabled {
     outline: none;
-    border: 1px solid red;
+    background-color: #ccc;
 }
 .Invalid {
     border: 1px solid red;

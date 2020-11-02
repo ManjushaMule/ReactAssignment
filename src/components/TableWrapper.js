@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Table from 'react-bootstrap/Table';
-
+import './TableWrapper.scss';
 
 class TableWrapper extends Component {
 
@@ -8,8 +8,6 @@ class TableWrapper extends Component {
         super(props);
         
         this.state = {
-            // header: false,
-            // fields: [],
             dataSet: [],
             headerCol: []
         }
@@ -17,63 +15,30 @@ class TableWrapper extends Component {
     
     componentDidMount() {
         const {dataSet, headerCol} = this.props;
-        //let fields = dataSet.map((d, i) => {return {checked: false} } )
         this.setState({
             dataSet: dataSet,
-            //fields: fields,
-            //fields: selectedFields,
             headerCol: headerCol
         });
     }
 
     componentDidUpdate() {
-        const {dataSet, headerCol, selectedFields} = this.props;
+        const {dataSet, headerCol} = this.props;
         
         if(this.state.dataSet !== dataSet) {
-            //let fields = dataSet.map((d, i) => {return {checked: false} } )
             this.setState({
                 dataSet: dataSet,
-                //fields: fields,
-                //fields: selectedFields,
                 headerCol: headerCol
             });
         }
     }
 
     changeAllCheckBox = (event) => {
-        // let {
-        //     header,
-        //     fields,
-        //     dataSet
-        // } = this.state;
-
-        // let newHeader = !header;
-        // let newFields = fields.map((f, index) => {
-        //     return {
-        //         checked: newHeader,
-        //         data: f.data || dataSet[index]
-        //     }   
-        // })
-        // this.setState({
-        //     fields: newFields,
-        //     header: newHeader
-        // })
-        // this.props.handleFieldSelection(this.state.dataSet);
         this.props.handleSelectAll(event.target.checked);
     }
 
     changeCheckBoxFields = (event, item, index) => {
-        //let newFields = this.state.fields;
-        //event.preventDefault();
         event.stopPropagation();
-        // let newFields = {...this.state.fields};
-        // newFields[index] = {
-        // 	checked: !newFields[index].checked,
-        //     data: item,
-        //     rowIndex: index
-        // }
         this.props.handleFieldSelection(item,index);
-        //this.setState({fields: newFields});
     }
 
     renderRow = () => {
@@ -81,7 +46,6 @@ class TableWrapper extends Component {
             return (
                 <tr key={index}>
                     <td>
-                        {/* <input type="checkbox" name="name1" onChange={(event) => this.changeCheckBoxFields(event, item, index)}  checked={this.state.fields[index].checked} /> */}
                         <input type="checkbox" 
                             name="name1" 
                             onChange={(event) => this.changeCheckBoxFields(event, item, index)}
@@ -112,17 +76,19 @@ class TableWrapper extends Component {
 
     render() {
         return (
-            <Table striped bordered hover>
-                <thead>
-                   <tr>
+            <div className="table-wrapper">
+                <Table striped bordered hover>
+                    <thead>
+                    <tr>
                         <th>
                             <input type="checkbox" checked={this.props.isSelectAll} name="name1" onChange={(event) => this.changeAllCheckBox(event)} />
                         </th>
                         {this.renderHeaders()}
                     </tr>
-                </thead>
-                <tbody>{this.renderRow()}</tbody>
-            </Table>
+                    </thead>
+                    <tbody>{this.renderRow()}</tbody>
+                </Table>
+            </div>
         );
     }
 }

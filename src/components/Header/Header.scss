@@ -1,10 +1,11 @@
 .header {
-    height: 56px;
+    height: 100px;
     width: 100%;
-    position: fixed;
+    position: sticky;
     top: 0;
     left: 0;
-    background-color: #703B09;
+    //background-color: #703B09;
+    background: url('../../images/spectra_background.jpg');
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -13,7 +14,7 @@
     z-index: 90;
 
     &__logo {
-        height: 40%;
-        width: 40%;
+        height: 80%;
+        width: 80%;
     }
 }

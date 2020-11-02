@@ -13,6 +13,7 @@ const input = ( props ) => {
 
     switch ( props.elementType ) {
         case ( 'input' ):
+            (props.elementConfig.type == "checkbox") && inputClasses.push('InputCheckbox');
             if(props.elementConfig.type == "checkbox" && props.checked) {
                 inputElement = <input
                 className={inputClasses.join(' ')}
@@ -72,14 +73,9 @@ const input = ( props ) => {
       );
     }
     return (
-      <React.Fragment>
+    <React.Fragment>
         {ele}
-        </React.Fragment>
-        
-        // <div className={"Input"}>
-        //     <label className={'Label'}>{props.label}</label>
-        //     {inputElement}
-        // </div>
+    </React.Fragment>
     );
 
 };

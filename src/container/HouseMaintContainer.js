@@ -1,20 +1,28 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import * as actions from '../store/actions/actions';
+
+import Button from 'react-bootstrap/Button';
 import TableWrapper from '../components/TableWrapper';
 import FormWrapper from '../components/FormWrapper';
-//import firebase from '../firebase/Firebase';
 import axios from '../axios';
+import Modal from '../components/Modal/Modal';
+import Loader from 'react-loader-spinner';
+import { PlusCircle, XCircle, Pencil } from 'react-bootstrap-icons';
+
 import './HouseMaintContainer.scss'
 
+
 const HEADERS = [
-    'Loc Id',
+    'Location Id',
     'House Code',
     'House Description',
     'Vendor',
     'Email Id',
     'Spot TV',
     'Spot Radio',
-    'Net TV',
-    'Net Radio',
+    'Network TV',
+    'Network Radio',
     'Unwired Network'
 ]
 
@@ -23,12 +31,14 @@ const FORM_SCHEMA = {
         label: 'Location Id',
         elementType: 'input',
         elementConfig: {
-            type: 'text',
-            placeholder: ''
+          type: 'text',
+          placeholder: '',
+          maxLength: 3
         },
         value: '',
         validation: {
-            required: true
+          required: true,
+          maxLength: 3
         },
         valid: false,
         touched: false,
@@ -38,12 +48,13 @@ const FORM_SCHEMA = {
         label: 'House Code',
         elementType: 'input',
         elementConfig: {
-            type: 'text',
-            placeholder: ''
+          type: 'text',
+          placeholder: '',
+          maxLength: 10
         },
         value: '',
         validation: {
-            required: true
+          required: true
         },
         valid: false,
         touched: false
@@ -52,8 +63,9 @@ const FORM_SCHEMA = {
         label: 'House Description',
         elementType: 'input',
         elementConfig: {
-            type: 'text',
-            placeholder: ''
+          type: 'text',
+          placeholder: '',
+          maxLength: 70
         },
         value: '',
         validation: {
@@ -65,14 +77,34 @@ const FORM_SCHEMA = {
     },
     vendor: {
         label: 'Vendor',
-        elementType: 'input',
+        elementType: 'select',
         elementConfig: {
-            type: 'text',
-            placeholder: ''
+          options: [
+            {
+              displayValue: '--- Select ---',
+              value: ''
+            },
+            {
+              displayValue: 'COMCAST',
+              value: 'COMCAST'
+            },
+            {
+              displayValue: 'YANGAROO',
+              value: 'YANGAROO'
+            },
+            {
+              displayValue: 'SPOT GENIE',
+              value: 'SPOT GENIE'
+            },
+            {
+              displayValue: 'SPACE',
+              value: 'SPACE'
+            }
+          ]
         },
         value: '',
         validation: {
-            required: true
+          required: true
         },
         valid: false,
         touched: false,
@@ -86,11 +118,12 @@ const FORM_SCHEMA = {
         elementConfig: {
             type: 'email',
             placeholder: 'abc@xyx.com',
+            maxLength: 100
             //disabled: true
         },
         value: '',
         validation: {
-            required: true
+            
         },
         valid: false,
         touched: false
@@ -123,6 +156,7 @@ const FORM_SCHEMA = {
             //required: true
         },
         valid: false,
+        checked: false,
         touched: false
     },
     networkTV: {
@@ -138,6 +172,7 @@ const FORM_SCHEMA = {
             //required: true
         },
         valid: false,
+        checked: false,
         touched: false
     },
     networkRadio: {
@@ -153,6 +188,7 @@ const FORM_SCHEMA = {
             //required: true
         },
         valid: false,
+        checked: false,
         touched: false
     },
     unwiredNetwork: {
@@ -171,12 +207,10 @@ const FORM_SCHEMA = {
         touched: false
     },
     productionServiceAvailable: {
-        label: 'Production Service Available',
+        label: 'Production Services Available',
         elementType: 'input',
         elementConfig: {
-            type: 'checkbox',
-            //placeholder: 'abc@xyx.com',
-            //disabled: true
+            type: 'checkbox'
         },
         value: '',
         validation: {
@@ -186,16 +220,57 @@ const FORM_SCHEMA = {
         touched: false
     },
     productionServiceDefault: {
-        label: 'Production Service Default',
+        label: 'Production Services Default',
         elementType: 'input',
         elementConfig: {
-            type: 'checkbox',
-            //placeholder: 'abc@xyx.com',
-            //disabled: true
+            type: 'checkbox'
         },
         value: '',
         validation: {
             required: true
+        },
+        valid: false,
+        touched: false
+    },
+    comment1: {
+      label: 'Comment 1',
+        elementType: 'input',
+        elementConfig: {
+            type: 'text',
+            placeholder: '',
+            maxLength: 60
+        },
+        value: '',
+        validation: {
+          maxLength: 60
+        },
+        valid: false,
+        touched: false
+    },
+    comment2: {
+      label: 'Comment 2',
+        elementType: 'input',
+        elementConfig: {
+            type: 'text',
+            placeholder: ''
+        },
+        value: '',
+        validation: {
+          maxLength: 60
+        },
+        valid: false,
+        touched: false
+    },
+    comment3: {
+      label: 'Comment 3',
+        elementType: 'input',
+        elementConfig: {
+            type: 'text',
+            placeholder: ''
+        },
+        value: '',
+        validation: {
+          maxLength: 60
         },
         valid: false,
         touched: false
@@ -207,6 +282,7 @@ const FORM_SCHEMA = {
         },
         value: "",
         valid: true,
+        validation: {}
     }
 }
 
@@ -228,7 +304,8 @@ class HouseMaintContainer extends Component {
     }
 
     componentDidMount() {
-    	this.fetchHouseMaintRecords();
+      this.fetchHouseMaintRecords();
+      //this.props.fetchRecords();
     }
 
     parseRecordFromResponse(response) {
@@ -251,7 +328,8 @@ class HouseMaintContainer extends Component {
             if(!!formSchema[key]) {
                 formSchema[key].value = "";
                 formSchema[key].checked = "";
-                formSchema[key].valid = false;
+                formSchema[key].valid = (key==='firebaseKey') ? false : true;
+                formSchema[key].elementConfig.disabled = false;
             }
         }
 
@@ -306,7 +384,8 @@ class HouseMaintContainer extends Component {
                     console.log(response);
                     this.setState({
                         showForm: showForm,
-                        isFetching: false
+                        isFetching: false,
+                        isFormEdit: false
                     });
                     this.fetchHouseMaintRecords();
                 })
@@ -337,8 +416,11 @@ class HouseMaintContainer extends Component {
     }
 
     handleDelete = () => {
-        console.log("to remove", this.state.selectedFields);
-        const { selectedFields, isSelectAll } = this.state;
+        //console.log("to remove", this.state.selectedFields);
+        //const { selectedFields } = this.props;
+        const { selectedFields } = this.state;
+        
+        const { isSelectAll } = this.state;
         this.setState({
             isFetching: true
         });
@@ -348,7 +430,7 @@ class HouseMaintContainer extends Component {
             axios.delete('/items.json')
                 .then(response => {
                     console.log(response);
-                    //this.fetchHouseMaintRecords();
+                    this.fetchHouseMaintRecords();
                     this.setState({
                         dataSet: [],
                         selectedFields: [],
@@ -380,6 +462,7 @@ class HouseMaintContainer extends Component {
     }
 
     handleSelectAll = (isSelectAll) => {
+        // const {selectedFields, dataSet} = this.props;
         const {selectedFields, dataSet} = this.state;
         let newFields;
 
@@ -400,8 +483,8 @@ class HouseMaintContainer extends Component {
         }
         
         this.setState({
-            selectedFields: newFields,
-            isSelectAll: isSelectAll
+          selectedFields: newFields,
+          isSelectAll: isSelectAll
         });
     }
 
@@ -417,7 +500,8 @@ class HouseMaintContainer extends Component {
     }
 
     handleFieldSelection = (item, index) => {
-        let newFields = [...this.state.selectedFields];
+      let newFields = [...this.state.selectedFields];  
+      //let newFields = [...this.props.selectedFields];
         newFields[index] = {
             checked: !newFields[index].checked,
             data: item
@@ -432,6 +516,7 @@ class HouseMaintContainer extends Component {
     
     handleFormEdit = () => {
         const selectedFields = [...this.state.selectedFields];
+        //const selectedFields = [...this.props.selectedFields];
         const formSchema = {...this.state.formSchema}
         
         const field = selectedFields.find(f => {
@@ -442,11 +527,13 @@ class HouseMaintContainer extends Component {
         console.log("iii", field);
         for(let key in rowData) {
             if(!!formSchema[key]) {
-                formSchema[key].value = rowData[key];
-                formSchema[key].checked = rowData[key];
-                formSchema[key].valid = true;
+              formSchema[key].value = rowData[key];
+              formSchema[key].checked = rowData[key];
+              formSchema[key].valid = true;
             }
         }
+        formSchema["locationId"].elementConfig.disabled = true;
+        formSchema["houseCode"].elementConfig.disabled = true;
 
         this.setState({
             formSchema: formSchema,
@@ -456,39 +543,78 @@ class HouseMaintContainer extends Component {
     }
 
     isEditDeleteEnabled = (isEdit) => {
-        const { selectedFields } = this.state;
-        const fields = selectedFields.filter(field => field.checked);
+      //const {selectedFields, dataSet} = this.props;
+      const {selectedFields, dataSet} = this.state;
+      const fields = selectedFields.filter(field => field.checked);
 
-        return (isEdit ? fields.length === 1 : fields.length);
+      return (isEdit ? fields.length === 1 : fields.length);
+    }
+
+    handleModalClose = () => {
+        console.log("**InhandleModalClose ");
+        this.initializeFormSchema();
+        this.setState({
+            showForm: false
+        });
     }
 
     render() {
-        const { isFetching } = this.state;
+        const { dataSet, isFetching, selectedFields } = this.state;
+        //const { dataSet, isFetching, selectedFields } = this.props;
 
         return (
             <div className="house-maint-container">
-                {isFetching ? <p>Loading</p> :
-                    <div>
+                {isFetching ? 
+                  <div className="house-maint-container__loader">
+                    <Loader 
+                      type="Puff"
+                      color="#f5ac00"
+                      height={100}
+                      width={100}/>
+                  </div> :
+                  <div>
                         <div className="house-maint-container__action">
-                            <button onClick={() => this.handleAdd()}>Add</button>
-                            {this.isEditDeleteEnabled(true) ? 
-                                <button onClick={() => this.handleFormEdit()}>Edit</button> : null}
-                            {this.isEditDeleteEnabled() ? 
-                                <button onClick={() => this.handleDelete()}>Delete</button> : null}
+                            <Button
+                              className="house-maint-container__action--btn"
+                              onClick={() => this.handleAdd()}
+                            >
+                              <PlusCircle />
+                              <span className="house-maint-container__action--text">Add</span>
+                            </Button>
+
+                            <Button
+                              className="house-maint-container__action--btn" 
+                              disabled={!this.isEditDeleteEnabled(true)}  
+                              onClick={() => this.handleFormEdit()}
+                            >
+                                <Pencil />
+                                <span className="house-maint-container__action--text">Edit</span>
+                            </Button>
+
+                            <Button
+                              className="house-maint-container__action--btn" 
+                              disabled={!this.isEditDeleteEnabled()}  
+                              onClick={() => this.handleDelete()}
+                            >
+                              <XCircle />
+                              <span className="house-maint-container__action--text">Delete</span>
+                            </Button>
                         </div>
+
                         <TableWrapper 
-                            dataSet={this.state.dataSet}
+                            dataSet={dataSet}
                             headerCol={HEADERS}
-                            selectedFields={this.state.selectedFields}
+                            selectedFields={selectedFields}
                             handleFieldSelection={this.handleFieldSelection}
                             handleSelectAll={this.handleSelectAll}
                             isSelectAll={this.state.isSelectAll}
                         />
-                        {this.state.showForm ? 
-                            <FormWrapper 
-                                formHandler={this.handleFormSubmit}
-                                formSchema={this.state.formSchema}/> : null
-                        }
+                        <Modal show={this.state.showForm} handleClose={this.handleModalClose}>
+                          <FormWrapper 
+                            formHandler={this.handleFormSubmit}
+                            formSchema={this.state.formSchema}
+                          />
+                        </Modal>
                     </div>
                 }
             </div>
@@ -496,4 +622,19 @@ class HouseMaintContainer extends Component {
     }
 }
 
-export default HouseMaintContainer;
+//export default HouseMaintContainer;
+
+const mapStateToProps = state => {
+  return {
+    dataSet: state.reducer.dataSet,
+    selectedFields: state.reducer.selectedFields,
+    isFetching: state.reducer.isFetching
+  }
+}
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchRecords: () => dispatch(actions.fetchHouseMaintenanceRecords())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HouseMaintContainer);
