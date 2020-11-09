@@ -9,6 +9,11 @@
     text-align: center;
   }
 
+  &__empty-table {
+    border: 1px solid #ccc;
+    padding: 10px
+  }
+
   &__action {
     border-top: 1px solid #ccc;
     border-left: 1px solid #ccc;

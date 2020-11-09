@@ -1,4 +1,6 @@
 import React,  {Component} from 'react';
+import PropTypes from 'prop-types';
+
 import cloneDeep from 'lodash/cloneDeep';
 import Input from '../Input/Input';
 import Form from 'react-bootstrap/Form';
@@ -396,6 +398,12 @@ class FormWrapper extends Component {
       </div>
     )
   }
+}
+
+FormWrapper.propTypes = {
+  formHandler: PropTypes.func.isRequired,
+  formSchema: PropTypes.object.isRequired,
+  isSaving: PropTypes.bool
 }
 
 export default FormWrapper

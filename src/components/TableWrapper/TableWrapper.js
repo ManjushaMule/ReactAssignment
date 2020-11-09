@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Table from 'react-bootstrap/Table';
 import './TableWrapper.scss';
 import { CheckCircleFill, Dash } from 'react-bootstrap-icons';
@@ -82,5 +83,13 @@ const TableWrapper = (props) => {
     );
 }
 
+TableWrapper.propTypes = {
+    dataSet: PropTypes.array.isRequired,
+    headerCol: PropTypes.array,
+    selectedFields: PropTypes.array.isRequired,
+    handleFieldSelection: PropTypes.func.isRequired,
+    handleSelectAll: PropTypes.func,
+    isSelectAll: PropTypes.bool
+}
 
 export default TableWrapper;

@@ -1,5 +1,6 @@
 import React from 'react';
 import Modal from 'react-bootstrap/Modal';
+import PropTypes from 'prop-types';
 
 const CustomModal = (props) => {
   const {show, handleClose} = props;
@@ -28,4 +29,8 @@ const CustomModal = (props) => {
   );
 }
   
+CustomModal.propTypes = {
+  show: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired
+}
 export default CustomModal;

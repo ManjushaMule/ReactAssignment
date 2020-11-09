@@ -246,7 +246,15 @@ class HouseMaintContainer extends Component {
   }
 
   renderTable = (dataSet, selectedFields) => {
-    let table = "no records";
+    let table = (
+      <div className="house-maint-container__empty-table">
+        <Message
+          show={true} 
+          message="No Records" 
+          type="primary"
+          isDismissible={false} 
+        />
+      </div>);
     if(dataSet.length) {
       table = (<TableWrapper 
           dataSet={dataSet}
@@ -291,6 +299,7 @@ class HouseMaintContainer extends Component {
               message={this.props.message} 
               type={notificationType}
               close={hideNotification}
+              isDismissible={true}
             />
             {isLoading ? this.renderLoader():
               <div>
