@@ -2,16 +2,18 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import {Provider} from 'react-redux';
 
-import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 
 
 import HouseMaintView from './components/HouseMaintView';
-import reducer from './store/reducer';
+import reducer from './store/reducers/reducer';
+import notificationReducer from './store/reducers/notificationReducer';
 
-function App() {  
+const App = () => {  
   const rootReducer = combineReducers({
-    reducer: reducer
+    reducer,
+    notificationReducer
   });
 
   const store = createStore(rootReducer, applyMiddleware(thunk));

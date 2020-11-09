@@ -1,4 +1,8 @@
 .table-wrapper {
     max-height: 600px;
     overflow-y: auto;
+
+    &__icon-cell {
+        text-align: center;
+    }
 }

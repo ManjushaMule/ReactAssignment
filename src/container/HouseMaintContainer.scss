@@ -33,7 +33,8 @@
         color: black;
         border-color: black;
       }
-      &:focus {
+      &:focus,
+      &:active {
         background: #f5ac00;
       }
     }
