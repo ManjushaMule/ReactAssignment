@@ -1,76 +1,31 @@
-import Button from 'react-bootstrap/Button';
+import React from 'react';
 import Modal from 'react-bootstrap/Modal';
-import React, { useState } from 'react';
 
-class CustomModal extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    const {show, handleClose} = this.props;
-    return (
-      <>
-        <Modal
-          size="lg"
-          show={show}
-          onHide={handleClose}
-          backdrop="static"
-          keyboard={false}
-          centered
-        >
-          <Modal.Header closeButton>
-            {/* <Modal.Title>Modal title</Modal.Title> */}
-          </Modal.Header>
-          <Modal.Body>
-            {this.props.children}
-          </Modal.Body>
-          {/* <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="primary">Understood</Button>
-          </Modal.Footer> */}
+const CustomModal = (props) => {
+  const {show, handleClose} = props;
+  
+  return (
+    <React.Fragment>
+      <Modal
+        size="lg"
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+        centered
+      >
+        <Modal.Header closeButton>
+          {/* <Modal.Title>Modal title</Modal.Title> */}
+        </Modal.Header>
+        
+        <Modal.Body>
+          {props.children}
+        </Modal.Body>
+        
+        {/* <Modal.Footer></Modal.Footer> */}
       </Modal>
-      </>
-    );
-  }
+    </React.Fragment>
+  );
 }
-
-// function Example() {
-//     const [show, setShow] = useState(false);
   
-//     const handleClose = () => setShow(false);
-//     const handleShow = () => setShow(true);
-  
-//     return (
-//       <>
-//         <Button variant="primary" onClick={handleShow}>
-//           Launch static backdrop modal
-//         </Button>
-  
-//         <Modal
-//           show={show}
-//           onHide={handleClose}
-//           backdrop="static"
-//           keyboard={false}
-//         >
-//           <Modal.Header closeButton>
-//             <Modal.Title>Modal title</Modal.Title>
-//           </Modal.Header>
-//           <Modal.Body>
-//             I will not close if you click outside me. Don't even try to press
-//             escape key.
-//           </Modal.Body>
-//           <Modal.Footer>
-//             <Button variant="secondary" onClick={handleClose}>
-//               Close
-//             </Button>
-//             <Button variant="primary">Understood</Button>
-//           </Modal.Footer>
-//         </Modal>
-//       </>
-//     );
-//   }
-  
-  export default CustomModal;
+export default CustomModal;
